@@ -8,7 +8,7 @@ export const DATA = {
   location: "Nigeria",
   locationLink: "https://www.google.com/maps/place/nigeria",
   description:
-    "All Things Web3 Content, SEO Technical Writer, & Crypto Research Analyst",
+    "All Things Web3 Content, SEO Technical Writer, & Crypto Research And Market Analyst",
   summary:
     "Hardworking, highly motivated professional in crypto with solid technical background. Operates well in both individual and team capacities, leveraging seasoned work ethic to quickly adapt to different processes and drive company objectives. Resourceful and results-driven with a passion for growth and efficiency to meet company needs and increase service value.",
   avatarUrl:
@@ -91,7 +91,7 @@ export const DATA = {
       href: "https://mubarakmuhammadjamiu.vercel.app/",
       badges: [],
       location: "Remote",
-      title: "Crypto News and Market Writer",
+      title: "Blockchain News and Crypto Market Writer",
       logoUrl:
         "https://media.licdn.com/dms/image/v2/C4D0BAQFYqgrD2XcA-g/company-logo_200_200/company-logo_200_200/0/1641018609002/satoshi_media_logo?e=2147483647&v=beta&t=e4eEY-Ol2jIhH64ViIw4cNSr2FDkzb5zEb8GXTQ1dbY",
       start: "March 2024",
@@ -142,7 +142,7 @@ export const DATA = {
       href: "https://www.hedgewithcrypto.com/",
       badges: [],
       location: "Remote",
-      title: "Bitcoin News and Market Writer",
+      title: "Bitcoin News Writer and Blockchain Researcher",
       logoUrl:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7KMch-prbVl_T6ipkn0bif1QGXgSXC_LHnA&s",
       start: "Jun 2024",
@@ -214,6 +214,32 @@ export const DATA = {
       end: "February 2024",
       description:
         "I write features article on trending football comeptition, listicles and learned  about Sports writing college Football and Soccer from industry leaders"
+    },
+    {
+      company: "Forbiz Media",
+      href: "https://forbizmedia.com/",
+      badges: [],
+      location: "Remote",
+      title: "Product Engineer & Business Developer",
+      logoUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR_rqHBP9EZtikxDfZ5ST3WilQC7Rjm4zhoA&s",
+      start: "Feb 2022",
+      end: "Sep 2023",
+      description:
+        "I develop and maintain user interfaces for web applications, implementing responsive design and ensuring cross-browser compatibility. I collaborate closely with the executive team to push the business forward.",
+    },
+    {
+      company: "Dawah Nigeria",
+      href: "https://dawahnigeria.com/",
+      badges: [],
+      location: "Onsite",
+      title: "Front-end Developer",
+      logoUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5RgelvCeQ_dLMJy1h1391c5bZkOFEqbVusg&s",
+      start: "August 2020",
+      end: "April 2022",
+      description:
+        "I develop and maintain user interfaces for web applications, implementing responsive design and ensuring cross-browser compatibility. I collaborate closely with UX/UI designers to enhance user experience, creating intuitive and visually appealing interfaces for the products.",
     },
   
   ],
@@ -418,7 +444,7 @@ export const DATA = {
       logoUrl:
         "https://yt3.googleusercontent.com/6So2DkKuCY1L2iv0yT0bLV01Tx1zPOXSNeNf_EuEuP6ZdcDrSauTTy3t8RV3BLTCaeRGaMzU=s900-c-k-c0x00ffffff-no-rj",
       altText: "Esports Insider",
-      description: "ESI",
+      description: "Esports Insider",
       href: "https://esportsinsider.com/",
     },
     {
