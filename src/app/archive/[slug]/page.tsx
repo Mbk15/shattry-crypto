@@ -69,7 +69,8 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 
 export async function generateStaticParams() {
   const res = await fetch(
-    "https://cryptonews.com/wp-json/wp/v2/posts?author=316&per_page=100"
+    "https://cryptonews.com/wp-json/wp/v2/posts?author=316&per_page=100",
+    { cache: "no-store" }
   );
   const posts: WordPressPost[] = await res.json();
 
