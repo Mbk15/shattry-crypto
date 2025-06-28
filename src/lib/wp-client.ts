@@ -16,6 +16,8 @@ export interface BlogPost {
   };
 }
 
+//
+
 export async function fetchBlogPosts(page: number = 1): Promise<BlogPost[]> {
   try {
     const res = await fetch(
