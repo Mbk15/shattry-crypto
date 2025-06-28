@@ -36,27 +36,107 @@ interface BlogPost {
   content: string;
 }
 
+async function fetchWithRetry(url: string, retries = 3): Promise<Response> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url, {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "Mozilla/5.0 (compatible; Blog-Fetcher/1.0)",
+        },
+        // Add timeout to prevent hanging requests
+        signal: AbortSignal.timeout(30000), // 30 second timeout
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+
+      return res;
+    } catch (error) {
+      console.warn(`Fetch attempt ${i + 1} failed:`, error);
+      if (i === retries - 1) throw error;
+
+      // Wait before retrying (exponential backoff)
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.pow(2, i) * 1000)
+      );
+    }
+  }
+  throw new Error("All retry attempts failed");
+}
+
+async function safeJsonParse(response: Response): Promise<any> {
+  const text = await response.text();
+
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    console.error("JSON Parse Error:", error);
+    console.error("Response text preview:", text.substring(0, 500) + "...");
+
+    // Try to find and fix common JSON issues
+    let fixedText = text;
+
+    // Remove potential BOM or invisible characters at the start
+    fixedText = fixedText.replace(/^\uFEFF/, "");
+
+    // Try to find where the JSON might be truncated or malformed
+    try {
+      // If it's an array, try to fix truncated arrays
+      if (fixedText.trim().startsWith("[")) {
+        const lastValidIndex = fixedText.lastIndexOf("}");
+        if (lastValidIndex > -1) {
+          const potentialFix = fixedText.substring(0, lastValidIndex + 1) + "]";
+          return JSON.parse(potentialFix);
+        }
+      }
+    } catch (fixError) {
+      console.error("Failed to auto-fix JSON:", fixError);
+    }
+
+    throw new Error(
+      `Invalid JSON response: ${
+        typeof error === "object" && error !== null && "message" in error
+          ? (error as { message: string }).message
+          : String(error)
+      }`
+    );
+  }
+}
+
 async function getPost(slug: string): Promise<BlogPost | null> {
   try {
-    const res = await fetch(
-      `https://hedgewithcrypto.com/wp-json/wp/v2/posts?slug=${slug}&_embed`
+    const response = await fetchWithRetry(
+      `https://hedgewithcrypto.com/wp-json/wp/v2/posts?slug=${encodeURIComponent(
+        slug
+      )}&_embed`
     );
 
-    if (!res.ok) throw new Error(`Failed to fetch post: ${res.statusText}`);
+    const posts: WordPressPost[] = await safeJsonParse(response);
 
-    const posts: WordPressPost[] = await res.json();
-    if (!posts.length) return null;
+    if (!Array.isArray(posts) || !posts.length) {
+      console.warn(`No posts found for slug: ${slug}`);
+      return null;
+    }
 
     const post = posts[0];
 
+    // Validate required fields
+    if (!post.slug || !post.title?.rendered || !post.content?.rendered) {
+      console.error("Post missing required fields:", post);
+      return null;
+    }
+
     return {
       slug: post.slug,
-      content: he.decode(post.content.rendered), // Decode content HTML
+      content: he.decode(post.content.rendered || ""),
       metadata: {
-        title: he.decode(post.title.rendered), // Decode title HTML entities
-        publishedAt: post.date,
+        title: he.decode(post.title.rendered || "Untitled"),
+        publishedAt: post.date || new Date().toISOString(),
         summary: he.decode(
-          post.excerpt.rendered.replace(/<[^>]*>/g, "").trim()
+          (post.excerpt?.rendered || "").replace(/<[^>]*>/g, "").trim() ||
+            "No summary available"
         ),
         image: post.yoast_head_json?.og_image?.[0]?.url,
       },
@@ -68,15 +148,40 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 }
 
 export async function generateStaticParams() {
-  const res = await fetch(
-    "https://hedgewithcrypto.com/wp-json/wp/v2/posts?authors=12&per_page=100",
-    { cache: "no-store" }
-  );
-  const posts: WordPressPost[] = await res.json();
+  try {
+    console.log("Fetching posts for static generation...");
 
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+    const response = await fetchWithRetry(
+      "https://hedgewithcrypto.com/wp-json/wp/v2/posts?authors=12&per_page=100&_fields=slug,id"
+    );
+
+    const posts: Pick<WordPressPost, "slug" | "id">[] = await safeJsonParse(
+      response
+    );
+
+    if (!Array.isArray(posts)) {
+      console.error("Expected array of posts, got:", typeof posts);
+      return [];
+    }
+
+    const validPosts = posts.filter(
+      (post) => post.slug && typeof post.slug === "string"
+    );
+
+    console.log(
+      `Successfully fetched ${validPosts.length} posts for static generation`
+    );
+
+    return validPosts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error("Error in generateStaticParams:", error);
+
+    // Return empty array to prevent build failure
+    // This allows the build to continue, but pages will be generated on-demand
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -84,35 +189,44 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata | undefined> {
-  const post = await getPost(params.slug);
-  if (!post) return;
+  try {
+    const post = await getPost(params.slug);
+    if (!post) return undefined;
 
-  const ogImage =
-    post.metadata.image || `${DATA.url}/og?title=${post.metadata.title}`;
+    const ogImage =
+      post.metadata.image ||
+      `${DATA.url}/og?title=${encodeURIComponent(post.metadata.title)}`;
 
-  return {
-    title: post.metadata.title,
-    description: post.metadata.summary,
-    openGraph: {
+    return {
       title: post.metadata.title,
       description: post.metadata.summary,
-      type: "article",
-      publishedTime: post.metadata.publishedAt,
-      url: `${DATA.url}/blog/${post.slug}`,
-      images: [{ url: ogImage }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.metadata.title,
-      description: post.metadata.summary,
-      images: [ogImage],
-    },
-  };
+      openGraph: {
+        title: post.metadata.title,
+        description: post.metadata.summary,
+        type: "article",
+        publishedTime: post.metadata.publishedAt,
+        url: `${DATA.url}/blog/${post.slug}`,
+        images: [{ url: ogImage }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.metadata.title,
+        description: post.metadata.summary,
+        images: [ogImage],
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return undefined;
+  }
 }
 
 export default async function Blog({ params }: { params: { slug: string } }) {
   const post = await getPost(params.slug);
-  if (!post) notFound();
+  if (!post) {
+    console.error(`Post not found: ${params.slug}`);
+    notFound();
+  }
 
   return (
     <section id="blog">
@@ -129,7 +243,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
             description: post.metadata.summary,
             image:
               post.metadata.image ||
-              `${DATA.url}/og?title=${post.metadata.title}`,
+              `${DATA.url}/og?title=${encodeURIComponent(post.metadata.title)}`,
             url: `${DATA.url}/blog/${post.slug}`,
             author: {
               "@type": "Person",
