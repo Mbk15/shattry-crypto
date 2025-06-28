@@ -118,7 +118,8 @@ export const DATA = {
       badges: [],
       location: "Remote",
       title: "Crypto Market Analyst",
-      logoUrl: "https://media.licdn.com/dms/image/v2/C4E0BAQEacp2vFU-46Q/company-logo_100_100/company-logo_100_100/0/1630618892318/financefeeds_logo?e=1755734400&v=beta&t=6LeJz5-aCEGBlCv_k4pOLqd5IDs1SDBPoIcQvPerevM",
+      logoUrl:
+        "https://media.licdn.com/dms/image/v2/C4E0BAQEacp2vFU-46Q/company-logo_100_100/company-logo_100_100/0/1630618892318/financefeeds_logo?e=1755734400&v=beta&t=6LeJz5-aCEGBlCv_k4pOLqd5IDs1SDBPoIcQvPerevM",
       start: "Dec 2024",
       end: "May 2025",
       description:
@@ -213,7 +214,7 @@ export const DATA = {
       start: "March 2023",
       end: "February 2024",
       description:
-        "I write features article on trending football comeptition, listicles and learned  about Sports writing college Football and Soccer from industry leaders"
+        "I write features article on trending football comeptition, listicles and learned  about Sports writing college Football and Soccer from industry leaders",
     },
     {
       company: "Forbiz Media",
@@ -241,19 +242,16 @@ export const DATA = {
       description:
         "I develop and maintain user interfaces for web applications, implementing responsive design and ensuring cross-browser compatibility. I collaborate closely with UX/UI designers to enhance user experience, creating intuitive and visually appealing interfaces for the products.",
     },
-  
   ],
   education: [
     {
       school: "University of Ibadan",
       href: "http://www.ui.edu.ng/",
       degree: "Bachelor's Degree of Electrical and Electronics Engineering",
-      logoUrl:
-        "https://incitis-food.eu/wp-content/uploads/2023/06/ibdan.png",
+      logoUrl: "https://incitis-food.eu/wp-content/uploads/2023/06/ibdan.png",
       start: "2019",
       end: "2025",
     },
-    
   ],
   projects: [
     {
@@ -273,26 +271,26 @@ export const DATA = {
       image: "/grad4.jpg",
       video: "",
     },
-    {
-      title: "Satoshi Media Archive",
-      href: "/games",
-      dates: "",
-      active: true,
-      description: "",
-      skills: ["Article Writing", "Blog Writing", "Gaming"],
-      links: [
-        {
-          type: "Articles",
-          href: "/games",
-          icon: <Icons.globe className="size-3" />,
-        },
-      ],
-      image: "/grad2.jpg",
-      video: "",
-    },
+    // {
+    //   title: "Satoshi Media Archive",
+    //   href: "/games",
+    //   dates: "",
+    //   active: true,
+    //   description: "",
+    //   skills: ["Article Writing", "Blog Writing", "Gaming"],
+    //   links: [
+    //     {
+    //       type: "Articles",
+    //       href: "/games",
+    //       icon: <Icons.globe className="size-3" />,
+    //     },
+    //   ],
+    //   image: "/grad2.jpg",
+    //   video: "",
+    // },
     {
       title: "Coinwaft",
-      href: "https://coinwaft.com/authors/anas",
+      href: "https://coinwaft.com/authors/mubarak",
       dates: "",
       active: true,
       description: "",
@@ -331,27 +329,22 @@ export const DATA = {
     },
     {
       title: "Esports Insider",
-      href: "#",
+      href: "/esports-articles",
       dates: "",
       active: true,
       description: "",
       skills: ["Article Writing", "Blog Writing"],
       links: [
         {
-          type: "Article 1",
-          href: "https://www.iyops.org/post/sam-bankman-fried-arrested-what-happened-to-ftx-and-its-billionaire-founder",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Article 2",
-          href: "https://www.iyops.org/post/web3-use-cases-from-cryptocurrencies-daos-nfts-to-the-metaverse",
+          type: "Articles",
+          href: "/esports-articles",
           icon: <Icons.globe className="size-3" />,
         },
       ],
       image: "/grad3.jpg",
       video: "",
     },
-     {
+    {
       title: "Techopedia",
       href: "https://www.techopedia.com/",
       dates: "",
@@ -375,48 +368,43 @@ export const DATA = {
     },
     {
       title: "HedgeWithCrypto",
-      href: "https://www.iyops.org",
+      href: "/hwc-articles",
       dates: "",
       active: true,
       description: "",
       skills: ["Article Writing", "Blog Writing"],
       links: [
         {
-          type: "Article 1",
-          href: "https://www.iyops.org/post/sam-bankman-fried-arrested-what-happened-to-ftx-and-its-billionaire-founder",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Article 2",
-          href: "https://www.iyops.org/post/web3-use-cases-from-cryptocurrencies-daos-nfts-to-the-metaverse",
+          type: "Articles",
+          href: "/hwc-articles",
           icon: <Icons.globe className="size-3" />,
         },
       ],
       image: "/grad3.jpg",
       video: "",
     },
-     {
-      title: "EconomyWatch",
-      href: "https://www.iyops.org",
-      dates: "",
-      active: true,
-      description: "",
-      skills: ["Article Writing", "Blog Writing"],
-      links: [
-        {
-          type: "Article 1",
-          href: "https://www.iyops.org/post/sam-bankman-fried-arrested-what-happened-to-ftx-and-its-billionaire-founder",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Article 2",
-          href: "https://www.iyops.org/post/web3-use-cases-from-cryptocurrencies-daos-nfts-to-the-metaverse",
-          icon: <Icons.globe className="size-3" />,
-        },
-      ],
-      image: "/grad3.jpg",
-      video: "",
-    },
+    // {
+    //   title: "EconomyWatch",
+    //   href: "https://www.iyops.org",
+    //   dates: "",
+    //   active: true,
+    //   description: "",
+    //   skills: ["Article Writing", "Blog Writing"],
+    //   links: [
+    //     {
+    //       type: "Article 1",
+    //       href: "https://www.iyops.org/post/sam-bankman-fried-arrested-what-happened-to-ftx-and-its-billionaire-founder",
+    //       icon: <Icons.globe className="size-3" />,
+    //     },
+    //     {
+    //       type: "Article 2",
+    //       href: "https://www.iyops.org/post/web3-use-cases-from-cryptocurrencies-daos-nfts-to-the-metaverse",
+    //       icon: <Icons.globe className="size-3" />,
+    //     },
+    //   ],
+    //   image: "/grad3.jpg",
+    //   video: "",
+    // },
   ],
   featured: [
     {

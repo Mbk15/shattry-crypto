@@ -1,4 +1,4 @@
-import { fetchBlogPostsAI } from "@/lib/wp-client";
+import { fetchHedgeWithCrypto } from "@/lib/wp-client";
 import { InfiniteScrollPosts } from "@/components/infinite-scroll-posts";
 
 export const metadata = {
@@ -6,12 +6,12 @@ export const metadata = {
 };
 
 export default async function AIPostsPage() {
-  const initialPosts = await fetchBlogPostsAI(1);
+  const initialPosts = await fetchHedgeWithCrypto(1);
   return (
     <InfiniteScrollPosts
       initialPosts={initialPosts}
-      apiPath="/api/ai-posts"
-      basePath="ai-articles"
+      apiPath="/api/hwc-posts"
+      basePath="hwc-articles"
     />
   );
 }

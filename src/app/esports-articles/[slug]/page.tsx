@@ -39,7 +39,7 @@ interface BlogPost {
 async function getPost(slug: string): Promise<BlogPost | null> {
   try {
     const res = await fetch(
-      `https://felloai.com/wp-json/wp/v2/posts?slug=${slug}&_embed`
+      `https://esportsinsider.com/wp-json/wp/v2/posts?slug=${slug}&_embed`
     );
 
     if (!res.ok) throw new Error(`Failed to fetch post: ${res.statusText}`);
@@ -69,7 +69,7 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 
 export async function generateStaticParams() {
   const res = await fetch(
-    "https://felloai.com/wp-json/wp/v2/posts?author=316&per_page=100"
+    "https://esportsinsider.com/wp-json/wp/v2/posts?author=316&per_page=100"
   );
   const posts: WordPressPost[] = await res.json();
 
